@@ -41,7 +41,8 @@ return {
     config = function()
         require("telescope").setup({
             defaults = {
-                borderchars = { "", "", "", "", "", "", "", "" }
+                borderchars = { "", "", "", "", "", "", "", "" },
+                file_ignore_patterns = { "%.class$" },
             }
         })
 
