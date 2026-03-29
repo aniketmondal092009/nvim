@@ -49,7 +49,14 @@ return {
         require('telescope').load_extension('fzf')
 
         local builtin = require("telescope.builtin")
-        vim.keymap.set("n", "<C-f>", builtin.find_files)
+        -- vim.keymap.set("n", "<C-f>", builtin.find_files)
+        vim.keymap.set("n", "<C-f>", function()
+            local opts = {
+                -- prompt_title = "",
+            }
+
+            builtin.find_files(opts)
+        end)
         vim.keymap.set("n", "<C-p>", function ()
             local opts = {
                 -- layout_config = {
@@ -57,7 +64,7 @@ return {
                 --     width = 0.5,
                 -- },                
                 previewer = false,
-                prompt_title = " ",
+                -- prompt_title = " ",
                 borderchars = { "", "", "", "", "", "", "", "" }
             }
             builtin.find_files(opts)

@@ -1,9 +1,9 @@
--- Editor options
+--: Editor options
 
 -- setting clipboard to system clipboard
 vim.opt.clipboard = "unnamedplus"
 
--- i like the block style default cursor
+-- i like the block style 
 vim.opt.guicursor = ""
 
 vim.opt.nu = true
@@ -41,9 +41,3 @@ vim.opt.colorcolumn = "80"
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
-
-
-
--- neovide settings
-vim.g.neovide_cursor_animation_length = 0
-

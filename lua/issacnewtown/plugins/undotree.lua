@@ -1,7 +1,6 @@
 
 return {
     "mbbill/undotree",
-
 }
 
 

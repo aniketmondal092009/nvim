@@ -4,17 +4,13 @@ return {
         "williamboman/mason.nvim",
         "j-hui/fidget.nvim",
 
-        {
-            "hrsh7th/nvim-cmp",
-            dependencies = {
-                "hrsh7th/cmp-nvim-lsp",
-                "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path",
-                "L3MON4D3/LuaSnip",
-                "saadparwaiz1/cmp_luasnip",
-                "rafamadriz/friendly-snippets",
-            }
-        },
+        "hrsh7th/nvim-cmp",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        { "L3MON4D3/LuaSnip", run = "make install_jsregexp" },
+        "saadparwaiz1/cmp_luasnip",
+        "rafamadriz/friendly-snippets",
 
         "mfussenegger/nvim-lint",
         "stevearc/conform.nvim",
@@ -88,10 +84,9 @@ return {
         vim.lsp.enable({
             "lua_ls",
             "rust_analyzer",
-            "ts_ls",
+            -- "ts_ls",
             "clangd",
             "jdtls",
-            "qmlls",
         })
 
         require('lint').linters_by_ft = {
@@ -146,7 +141,6 @@ return {
         vim.diagnostic.config({
             update_in_insert = true,
             virtual_text = true,
-            jump = { float = true },
             float = {
                 focusable = false,
                 border = "rounded",
@@ -155,5 +149,24 @@ return {
                 prefix = "",
             }
         })
+
+
+        vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('Issacnewtown', {}),
+            callback = function(e)
+                local opts = { buffer = e.buf }
+                vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+                vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end, opts)
+                vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+                vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
+                vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+                vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end, opts)
+                vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+                -- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+                vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+                vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+            end
+        })
+
     end
 }
