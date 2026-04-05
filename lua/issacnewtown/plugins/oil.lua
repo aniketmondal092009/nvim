@@ -2,7 +2,7 @@ return {
     "stevearc/oil.nvim",
     config = function()
         require("oil").setup {
-            default_file_explorer = false,
+            default_file_explorer = true,
 
             columns = {
             },
@@ -16,6 +16,7 @@ return {
             keymaps = {
                 ["<C-p>"] = false,
                 ["?"] = { "actions.show_help", mode = "n" },
+                ["."] = { "actions.show_help", mode = "n" },
 
                 ["gd"] = function()
                     require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
@@ -24,6 +25,6 @@ return {
             }
         }
 
-        -- vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+        vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Open parent directory" })
     end,
 }

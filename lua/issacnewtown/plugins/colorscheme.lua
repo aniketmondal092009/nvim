@@ -2,11 +2,10 @@ return {
     {
         "atlas.nvim",
         dir = "~/dev/atlastheme",
-
         lazy = false,
         priority = 1000,
 
-        config = function ()
+        config = function()
             require('atlas').setup({
                 variant = "main",
 
@@ -18,22 +17,7 @@ return {
             })
 
 
-            local highlight_groups = {
-                -- "NormalFloat", 
-                -- "FloatBorder", 
-                -- "Pmenu",       -- Popup menu (completions)
-                -- "PmenuSel",    -- Selected item in popup
-                -- "NormalNC",    -- Normal text in non-current windows
-            }
-
-            -- vim.api.nvim_set_hl(0, "Pmenu", { bg = "#333333" })
-            -- vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#444444" })
-            -- vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE" })
-            -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
-            -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
-            
             vim.cmd([[color atlas]])
-
         end
 
     },
@@ -106,7 +90,7 @@ return {
                         LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
                         MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
 
-                        TelescopeSelectionCaret = { fg = "white", bg = theme.ui.bg_p2 },                        
+                        TelescopeSelectionCaret = { fg = "white", bg = "NONE" },                        
 
                         Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },  -- add `blend = vim.o.pumblend` to enable transparency
                         PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
@@ -118,7 +102,4 @@ return {
             })
         end
     },
-
-    { 'Mofiqul/vscode.nvim' },
-    { 'RRethy/base16-nvim' }
 }

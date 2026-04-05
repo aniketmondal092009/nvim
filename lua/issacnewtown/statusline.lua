@@ -37,8 +37,8 @@ local statusline = {
   '%m',
   '%r',
   '%=',
-  '%l,%-3c',
-  '        %3{%v:lua._statusline_component("position")%}',
+  '%l,%-11c',
+  '%3{%v:lua._statusline_component("position")%}',
 }
 
 vim.o.statusline = table.concat(statusline, '')

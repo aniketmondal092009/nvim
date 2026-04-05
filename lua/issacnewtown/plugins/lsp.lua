@@ -23,7 +23,7 @@ return {
         -- require("fidget").setup()
 
 
-        -- Lspconfig
+        -- lspconfig
         vim.lsp.config("jdtls", {
             settings = {
                 java = {
@@ -33,7 +33,6 @@ return {
         })
 
         vim.lsp.config['lua_ls'] = {
-            -- Command and arguments to start the server.
             cmd = { 'lua-language-server' },
             filetypes = { 'lua' },
             root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
@@ -74,8 +73,8 @@ return {
 
             on_attach = function(client, bufnr)
                 -- since im using prettier as my formatter
-                -- it makes no sense to add additional formatting
-                -- from ts_ls
+                -- it makes no sense 
+                -- to add additional formatting from ts_ls
                 client.server_capabilities.documentFormattingProvider = false
             end,
         }
@@ -94,7 +93,9 @@ return {
         }
 
         require("conform").setup({
-            format_on_save = true,
+            format_on_save = {
+                lsp_format = "never",
+            },
 
             formatters_by_ft = {
                 typescriptreact = { "prettier" },
