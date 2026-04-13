@@ -10,12 +10,14 @@ return {
         "hrsh7th/cmp-path",
         { "L3MON4D3/LuaSnip", run = "make install_jsregexp" },
         "saadparwaiz1/cmp_luasnip",
-        "rafamadriz/friendly-snippets",
+        -- "rafamadriz/friendly-snippets",
 
         "mfussenegger/nvim-lint",
         "stevearc/conform.nvim",
 
         { "mfussenegger/nvim-jdtls" },
+
+        -- { 'mrcjkb/rustaceanvim', version = '^9', lazy = false },
     },
 
     config = function()
@@ -81,27 +83,27 @@ return {
 
 
         vim.lsp.enable({
-            "lua_ls",
-            "rust_analyzer",
+            -- "lua_ls",
+            -- "rust_analyzer",
             -- "ts_ls",
             "clangd",
-            "jdtls",
+            -- "jdtls",
         })
 
-        require('lint').linters_by_ft = {
-            typescriptreact = {'eslint_d'},
-        }
-
-        require("conform").setup({
-            format_on_save = {
-                lsp_format = "never",
-            },
-
-            formatters_by_ft = {
-                typescriptreact = { "prettier" },
-            },
-        })
-
+        -- require('lint').linters_by_ft = {
+        --     typescriptreact = {'eslint_d'},
+        -- }
+        --
+        -- require("conform").setup({
+        --     format_on_save = {
+        --         lsp_format = "never",
+        --     },
+        --
+        --     formatters_by_ft = {
+        --         typescriptreact = { "prettier" },
+        --     },
+        -- })
+        --
 
 
         -- completion config
@@ -110,7 +112,7 @@ return {
 
         -- load friendly snippets
         -- for some nice filetype snippets
-        require("luasnip.loaders.from_vscode").lazy_load()
+        -- require("luasnip.loaders.from_vscode").lazy_load()
 
 
         cmp.setup({
@@ -164,8 +166,8 @@ return {
                 vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end, opts)
                 vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
                 -- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-                vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-                vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+                vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+                vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
             end
         })
 
