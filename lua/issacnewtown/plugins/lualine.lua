@@ -71,11 +71,6 @@ return {
         -- }
 
         vim.keymap.set("n", "<leader>cc", function()
-            local colorscheme = vim.g.colors_name
-
-            if colorscheme ~= "kanagawa" then
-                print("your colorscheme is kanagawa")
-            end
         end)
     end
 }
