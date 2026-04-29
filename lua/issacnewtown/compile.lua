@@ -1,23 +1,10 @@
---- @module 'compile'
---- Interactive compilation runner for Neovim with .env support and output navigation.
 local M = {}
 
---- @type string|nil
---- The last shell command executed by the user.
 M.last_cmd = nil
---- @type string|nil
---- The last working directory used for compilation.
 M.last_cwd = nil
---- @type string|nil
---- Path to the last .env file used (consumed once per execution).
 M.last_env = nil
---- @type integer|nil
---- Handle to the current compile output window, if open.
 M.compile_window = nil
 
---- Closes the active compile output window and resets its handle.
---- Does nothing if no compile window is open.
---- @return nil
 M.close_compile_window = function()
     if M.compile_window and vim.api.nvim_win_is_valid(M.compile_window) then
         vim.api.nvim_win_close(M.compile_window, true)
@@ -25,10 +12,6 @@ M.close_compile_window = function()
     M.compile_window = nil
 end
 
---- Prompts the user for a compilation command and working directory,
---- then executes the command via `M.executor`.
---- Uses `M.last_cmd` and `M.last_cwd` as defaults in prompts.
---- @return nil
 M.command = function()
     local cmd = vim.fn.input('Compile command: ', M.last_cmd or "")
 
@@ -43,9 +26,6 @@ M.command = function()
     M.executor(cmd, cwd)
 end
 
---- Re-executes the last compilation command and working directory.
---- Shows an error if no prior command exists.
---- @return nil
 M.run_last = function()
     if not M.last_cmd then
         vim.notify("No last command to run. Use :Compile first.", vim.log.levels.ERROR)
@@ -54,15 +34,6 @@ M.run_last = function()
     M.executor(M.last_cmd, M.last_cwd)
 end
 
---- Executes a shell command in a given working directory and streams output
---- to a dedicated scratch window named `[Compile]`.
---- - Closes any existing compile window.
---- - Sources `M.last_env` (if set) before the command and then unsets it.
---- - Supports clickable file paths (e.g., `file:line`) via `<CR>` mapping.
---- - Press `q` to close the window.
---- @param cmd string Shell command to execute.
---- @param cwd string Working directory for the command.
---- @return nil
 M.executor = function(cmd, cwd)
     if M.compile_window ~= nil then
         M.close_compile_window()
@@ -167,8 +138,10 @@ M.executor = function(cmd, cwd)
     vim.api.nvim_set_option_value("swapfile", false, { buf = compile_buffer })
     vim.api.nvim_set_option_value("filetype", "compile", { buf = compile_buffer })
 
-    --- @param err string|nil
-    --- @param data string|nil
+    vim.api.nvim_buf_set_lines(compile_buffer, 0, 0, false, { "--*-- mode: compilation --*--" })
+    vim.api.nvim_buf_set_lines(compile_buffer, -1, -1, false, { cmd })
+
+
     local on_data = function(err, data)
         if err then
             vim.schedule(function()
@@ -185,11 +158,19 @@ M.executor = function(cmd, cwd)
         end)
     end
 
-    --- @param obj {code: integer}
     local on_exit = function(obj)
         vim.schedule(function()
-            local status_line = "[Command finished with code " .. obj.code .. "]"
+            local status_line
+
+            if obj.code == 1 then
+                status_line = "[Error occured during compilation]"
+            else
+                status_line = "[Compilation successful]"
+            end
+
+
             vim.api.nvim_buf_set_lines(compile_buffer, -1, -1, false, { "", status_line })
+            vim.api.nvim_buf_set_lines(compile_buffer, -1, -1, false, { "[Command finished with code " .. obj.code .. "]" })
         end)
     end
 

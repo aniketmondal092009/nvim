@@ -1,31 +1,22 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         "j-hui/fidget.nvim",
-
         "hrsh7th/nvim-cmp",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
-        { "L3MON4D3/LuaSnip", run = "make install_jsregexp" },
+        "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
-        -- "rafamadriz/friendly-snippets",
-
-        "mfussenegger/nvim-lint",
         "stevearc/conform.nvim",
-
-        { "mfussenegger/nvim-jdtls" },
-
-        -- { 'mrcjkb/rustaceanvim', version = '^9', lazy = false },
     },
 
     config = function()
         require("mason").setup()
-        -- require("fidget").setup()
+        require("fidget").setup()
 
 
-        -- lspconfig
         vim.lsp.config("jdtls", {
             settings = {
                 java = {
@@ -35,17 +26,36 @@ return {
         })
 
         vim.lsp.config['lua_ls'] = {
-            cmd = { 'lua-language-server' },
-            filetypes = { 'lua' },
-            root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
+          on_init = function(client)
+            client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
 
-            settings = {
-                Lua = {
-                    runtime = {
-                        version = 'LuaJIT',
-                    }
-                }
-            }
+            if client.workspace_folders then
+              local path = client.workspace_folders[1].name
+              if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
+            end
+
+            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+              runtime = {
+                version = 'LuaJIT',
+                path = { 'lua/?.lua', 'lua/?/init.lua' },
+              },
+              workspace = {
+                checkThirdParty = false,
+                -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
+                --  See https://github.com/neovim/nvim-lspconfig/issues/3189
+                library = vim.tbl_extend('force', vim.api.nvim_get_runtime_file('', true), {
+                  '${3rd}/luv/library',
+                  '${3rd}/busted/library',
+                }),
+              },
+            })
+          end,
+          ---@type lspconfig.settings.lua_ls
+          settings = {
+            Lua = {
+              format = { enable = false }, -- Disable formatting (formatting is done by stylua)
+            },
+          },
         }
 
         vim.lsp.config['ts_ls'] = {
@@ -83,37 +93,16 @@ return {
 
 
         vim.lsp.enable({
-            -- "lua_ls",
+            "lua_ls",
             -- "rust_analyzer",
             -- "ts_ls",
             "clangd",
             -- "jdtls",
         })
 
-        -- require('lint').linters_by_ft = {
-        --     typescriptreact = {'eslint_d'},
-        -- }
-        --
-        -- require("conform").setup({
-        --     format_on_save = {
-        --         lsp_format = "never",
-        --     },
-        --
-        --     formatters_by_ft = {
-        --         typescriptreact = { "prettier" },
-        --     },
-        -- })
-        --
 
-
-        -- completion config
         local cmp = require('cmp')
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-        -- load friendly snippets
-        -- for some nice filetype snippets
-        -- require("luasnip.loaders.from_vscode").lazy_load()
-
 
         cmp.setup({
             snippet = {
@@ -158,16 +147,27 @@ return {
             group = vim.api.nvim_create_augroup('Issacnewtown', {}),
             callback = function(e)
                 local opts = { buffer = e.buf }
+                local builtin = require("telescope.builtin")
+
                 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+                vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
                 vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end, opts)
                 vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
                 vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
                 vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
                 vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end, opts)
                 vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-                -- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-                vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
-                vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+
+
+                local diagnostic_jump_prev = function()
+                    vim.diagnostic.jump({ count = -1, float = true })
+                end
+                local diagnostic_jump_next = function()
+                    vim.diagnostic.jump({ count = 1, float = true })
+                end
+
+                vim.keymap.set("n", "[d", diagnostic_jump_prev, opts)
+                vim.keymap.set("n", "]d", diagnostic_jump_next, opts)
             end
         })
 

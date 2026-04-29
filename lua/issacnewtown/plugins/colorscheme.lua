@@ -2,22 +2,18 @@ return {
     {
         "atlas.nvim",
         dir = "~/dev/atlastheme",
-        -- lazy = false,
-        -- priority = 1000,
+        lazy = false,
+        priority = 1000,
 
         config = function()
             require('atlas').setup({
                 variant = "main",
 
                 disable_background = true,
-
-                styles = {
-                    italic = false,
-                },
             })
 
 
-            -- vim.cmd([[color atlas]])
+            vim.cmd([[color atlas]])
         end
 
     },
@@ -102,13 +98,4 @@ return {
             })
         end
     },
-
-    { 
-        "slugbyte/lackluster.nvim",
-        config = function()
-            vim.cmd([[colorscheme lackluster-night]])
-        end,
-    },
-
-    { "vague-theme/vague.nvim" },
 }

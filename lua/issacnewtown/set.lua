@@ -1,10 +1,7 @@
---: Editor options
 
--- setting clipboard to system clipboard
 vim.opt.clipboard = "unnamedplus"
 
--- i like the block style 
-vim.opt.guicursor = ""
+-- vim.opt.guicursor = ""
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
