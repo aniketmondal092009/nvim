@@ -1,22 +1,17 @@
 return {
     "neovim/nvim-lspconfig",
-    dependencies = {
-        "mason-org/mason.nvim",
-        "j-hui/fidget.nvim",
-        "hrsh7th/nvim-cmp",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip",
-        "stevearc/conform.nvim",
-    },
-
+    -- dependencies = {
+    --     "mason-org/mason.nvim",
+    --     "j-hui/fidget.nvim",
+    --     "hrsh7th/nvim-cmp",
+    --     "hrsh7th/cmp-nvim-lsp",
+    --     "hrsh7th/cmp-buffer",
+    --     "hrsh7th/cmp-path",
+    --     "L3MON4D3/LuaSnip",
+    --     "saadparwaiz1/cmp_luasnip",
+    --     "stevearc/conform.nvim",
+    -- },
     config = function()
-        require("mason").setup()
-        require("fidget").setup()
-
-
         vim.lsp.config("jdtls", {
             settings = {
                 java = {
@@ -84,50 +79,45 @@ return {
             end,
 
             on_attach = function(client, bufnr)
-                -- since im using prettier as my formatter
-                -- it makes no sense 
-                -- to add additional formatting from ts_ls
                 client.server_capabilities.documentFormattingProvider = false
             end,
         }
 
 
         vim.lsp.enable({
-            "lua_ls",
+            -- "lua_ls",
             -- "rust_analyzer",
             -- "ts_ls",
             "clangd",
             -- "jdtls",
         })
 
-
-        local cmp = require('cmp')
-        local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-        cmp.setup({
-            snippet = {
-                expand = function(args)
-                    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                end,
-            },
-            window = {
-                -- completion = { border = "rounded" },
-                documentation = { border = "rounded" }, 
-            },
-            mapping = cmp.mapping.preset.insert({
-                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-                ["<C-Space>"] = cmp.mapping.complete(),
-            }),
-            sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'path' },
-                { name = 'luasnip' },
-            }, {
-                { name = 'buffer' },
-            })
-        })
+        -- local cmp = require('cmp')
+        -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
+        --
+        -- cmp.setup({
+        --     snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        --         end,
+        --     },
+        --     window = {
+        --         -- completion = { border = "rounded" },
+        --         documentation = { border = "rounded" }, 
+        --     },
+        --     mapping = cmp.mapping.preset.insert({
+        --         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+        --         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        --         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        --         ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        --         ["<C-Space>"] = cmp.mapping.complete(),
+        --     }),
+        --     sources = cmp.config.sources({
+        --         { name = 'nvim_lsp' },
+        --         { name = 'path' },
+        --         { name = 'luasnip' },
+        --     }, {
+        --         { name = 'buffer' },
+        --     })
+        -- })
 
 
         vim.diagnostic.config({

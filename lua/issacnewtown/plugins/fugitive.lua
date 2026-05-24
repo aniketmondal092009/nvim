@@ -1,7 +1,3 @@
-
-return { 
-    "tpope/vim-fugitive",
-
-    config = function()
-    end,
+return {
+    { "tpope/vim-fugitive" },
 }

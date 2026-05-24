@@ -12,6 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    spec = "issacnewtown.plugins",
+    spec = { 
+        { import = "issacnewtown.plugins" },
+        { "tpope/vim-fugitive" },
+        { "mbbill/undotree" },
+    },
     change_detection = { notify = false }
 })
