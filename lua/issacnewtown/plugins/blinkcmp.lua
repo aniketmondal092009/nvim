@@ -19,11 +19,11 @@ return {
                     window = { border = "rounded" },
                 },
                 menu = {
+                    border = "rounded",
                     draw = {
                         columns = {
                             { "label" },
                             { "kind" },
-                            { "source_name" },
                         },
                         components = {
                             source_name = {

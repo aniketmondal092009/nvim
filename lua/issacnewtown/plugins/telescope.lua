@@ -29,6 +29,7 @@ return {
             }
             builtin.find_files(opts)
         end)
-        vim.keymap.set("n", "<leader>w", function() builtin.live_grep() end)
+
+        require("issacnewtown.multigrep").setup()
     end
 }

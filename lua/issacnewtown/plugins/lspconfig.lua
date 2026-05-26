@@ -1,17 +1,12 @@
 return {
     "neovim/nvim-lspconfig",
-    -- dependencies = {
-    --     "mason-org/mason.nvim",
-    --     "j-hui/fidget.nvim",
-    --     "hrsh7th/nvim-cmp",
-    --     "hrsh7th/cmp-nvim-lsp",
-    --     "hrsh7th/cmp-buffer",
-    --     "hrsh7th/cmp-path",
-    --     "L3MON4D3/LuaSnip",
-    --     "saadparwaiz1/cmp_luasnip",
-    --     "stevearc/conform.nvim",
-    -- },
     config = function()
+        local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+        vim.lsp.config('rust_analyzer', {
+            capabilities = capabilities,
+        })
+
         vim.lsp.config("jdtls", {
             settings = {
                 java = {
@@ -86,8 +81,8 @@ return {
 
         vim.lsp.enable({
             -- "lua_ls",
-            -- "rust_analyzer",
             -- "ts_ls",
+            "rust_analyzer",
             "clangd",
             -- "jdtls",
         })
@@ -140,7 +135,6 @@ return {
                 local builtin = require("telescope.builtin")
 
                 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-                vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
                 vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end, opts)
                 vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
                 vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
