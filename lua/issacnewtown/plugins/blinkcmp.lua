@@ -19,7 +19,6 @@ return {
                     window = { border = "rounded" },
                 },
                 menu = {
-                    border = "rounded",
                     draw = {
                         columns = {
                             { "label" },
