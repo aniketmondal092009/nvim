@@ -2,7 +2,7 @@ return {
     "brenoprata10/nvim-highlight-colors",
     event = "BufReadPre",
     opts = {
-        render = "background",
+        render = "virtual",
         enable_hex = true,
         enable_short_hex = true,
         enable_rgb = true,

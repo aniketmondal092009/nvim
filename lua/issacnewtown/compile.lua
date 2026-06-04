@@ -124,6 +124,9 @@ M.executor = function(cmd, cwd)
         noremap = true,
         silent = true,
     })
+
+
+
     vim.api.nvim_buf_set_keymap(compile_buffer, "n", "q", "", {
         callback = function()
             M.close_compile_window()
@@ -132,6 +135,13 @@ M.executor = function(cmd, cwd)
         silent = true,
     })
 
+    vim.api.nvim_buf_set_keymap(compile_buffer, "n", "<esc>", "", {
+        callback = function()
+            M.close_compile_window()
+        end,
+        noremap = true,
+        silent = true,
+    })
     vim.api.nvim_buf_set_name(compile_buffer, "[Compile]")
     vim.api.nvim_set_option_value("buftype", "nofile", { buf = compile_buffer })
     vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = compile_buffer })
@@ -170,7 +180,7 @@ M.executor = function(cmd, cwd)
 
 
             vim.api.nvim_buf_set_lines(compile_buffer, -1, -1, false, { "", status_line })
-            vim.api.nvim_buf_set_lines(compile_buffer, -1, -1, false, { "[Command finished with code " .. obj.code .. "]" })
+            vim.api.nvim_buf_set_lines(compile_buffer, -1, -1, false, { "[Command exited with code " .. obj.code .. "]" })
         end)
     end
 
@@ -212,4 +222,5 @@ vim.api.nvim_create_user_command(
     }
 )
 
-vim.keymap.set("n", "<M-b>", "<cmd>Compile<CR>")
+vim.keymap.set("n", "<M-c>", "<cmd>Compile<CR>")
+

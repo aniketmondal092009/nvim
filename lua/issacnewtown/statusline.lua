@@ -1,5 +1,5 @@
 
--- vim.opt.laststatus = 0
+vim.opt.laststatus = 2
 -- 0: never
 -- 1: only if there are at least two windows
 -- 2: always

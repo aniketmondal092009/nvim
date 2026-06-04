@@ -16,36 +16,36 @@ return {
         })
 
         vim.lsp.config['lua_ls'] = {
-          on_init = function(client)
-            client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
+            on_init = function(client)
+                client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
+                client.config.settings.Lua.workspace.checkThirdParty = false
+                if client.workspace_folders then
+                    local path = client.workspace_folders[1].name
+                    if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
+                end
 
-            if client.workspace_folders then
-              local path = client.workspace_folders[1].name
-              if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
-            end
-
-            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-              runtime = {
-                version = 'LuaJIT',
-                path = { 'lua/?.lua', 'lua/?/init.lua' },
-              },
-              workspace = {
-                checkThirdParty = false,
-                -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
-                --  See https://github.com/neovim/nvim-lspconfig/issues/3189
-                library = vim.tbl_extend('force', vim.api.nvim_get_runtime_file('', true), {
-                  '${3rd}/luv/library',
-                  '${3rd}/busted/library',
-                }),
-              },
-            })
-          end,
-          ---@type lspconfig.settings.lua_ls
-          settings = {
-            Lua = {
-              format = { enable = false }, -- Disable formatting (formatting is done by stylua)
+                client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                    runtime = {
+                        version = 'LuaJIT',
+                        path = { 'lua/?.lua', 'lua/?/init.lua' },
+                    },
+                    workspace = {
+                        checkThirdParty = false,
+                        -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
+                        --  See https://github.com/neovim/nvim-lspconfig/issues/3189
+                        library = vim.tbl_extend('force', vim.api.nvim_get_runtime_file('', true), {
+                            '${3rd}/luv/library',
+                            '${3rd}/busted/library',
+                        }),
+                    },
+                })
+            end,
+            ---@type lspconfig.settings.lua_ls
+            settings = {
+                Lua = {
+                    format = { enable = false }, -- Disable formatting (formatting is done by stylua)
+                },
             },
-          },
         }
 
         vim.lsp.config['ts_ls'] = {
@@ -78,41 +78,28 @@ return {
             end,
         }
 
+        vim.lsp.config('clangd', {
+            cmd = {
+                "clangd",
+                "-j=4",
+                "--malloc-trim",
+                "--background-index",
+                "--pch-storage=memory",
+            },
+            capabilities = capabilities,
+            flags = {
+                debounce_text_changes = 200,
+            },
+        })
+
 
         vim.lsp.enable({
             -- "lua_ls",
             -- "ts_ls",
-            "rust_analyzer",
+            -- "rust_analyzer",
             "clangd",
             -- "jdtls",
         })
-
-        -- local cmp = require('cmp')
-        -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
-        --
-        -- cmp.setup({
-        --     snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        --         end,
-        --     },
-        --     window = {
-        --         -- completion = { border = "rounded" },
-        --         documentation = { border = "rounded" }, 
-        --     },
-        --     mapping = cmp.mapping.preset.insert({
-        --         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        --         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        --         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-        --         ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        --         ["<C-Space>"] = cmp.mapping.complete(),
-        --     }),
-        --     sources = cmp.config.sources({
-        --         { name = 'nvim_lsp' },
-        --         { name = 'path' },
-        --         { name = 'luasnip' },
-        --     }, {
-        --         { name = 'buffer' },
-        --     })
-        -- })
 
 
         vim.diagnostic.config({
@@ -139,7 +126,9 @@ return {
                 vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
                 vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
                 vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
-                vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end, opts)
+
+                vim.keymap.set("n", "grr", builtin.lsp_references)
+                vim.keymap.set("n", "gri", builtin.lsp_implementations)
                 vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
 
 
@@ -155,5 +144,5 @@ return {
             end
         })
 
-    end
+    end,
 }

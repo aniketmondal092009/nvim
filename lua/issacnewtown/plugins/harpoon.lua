@@ -15,5 +15,4 @@ return {
         vim.keymap.set("n", "<C-k>", function() ui.nav_file(2) end)
         vim.keymap.set("n", "<C-l>", function() ui.nav_file(3) end)
     end
-
 }

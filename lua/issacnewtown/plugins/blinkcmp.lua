@@ -23,6 +23,7 @@ return {
                         columns = {
                             { "label" },
                             { "kind" },
+                            { "source_name" },
                         },
                         components = {
                             source_name = {

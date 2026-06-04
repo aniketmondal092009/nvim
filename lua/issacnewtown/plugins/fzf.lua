@@ -1,0 +1,29 @@
+return {
+    -- "ibhagwan/fzf-lua",
+    -- config = function()
+    --     local fzf = require("fzf-lua")
+    --     fzf.setup({
+    --         winopts = {
+    --             preview = {
+    --                 default = "none",
+    --             },
+    --             border = "none",
+    --         },
+    --         grep = {
+    --             rg_opts = "--color=never --no-heading --with-filename --line-number --column --smart-case",
+    --         },
+    --         fzf_opts = {
+    --             ["--layout"] = "default",
+    --             ["--cycle"] = true,
+    --         }
+    --     })
+    --
+    --
+    --     vim.keymap.set("n", "<C-p>", function()
+    --         local ok = pcall(fzf.git_files, { previewer = false })
+    --         if not ok then
+    --             fzf.git_files({ previewer = false })
+    --         end
+    --     end)
+    -- end,
+}
