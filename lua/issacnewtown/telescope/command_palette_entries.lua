@@ -89,7 +89,13 @@ return {
         end,
     },
     {
-        name = "Git commit: see list of all commits, commit details, switch to an older commit",
+        name = "Git commit: commit changes",
+        fn = function()
+            vim.cmd([[Telescope git_commits]])
+        end,
+    },
+    {
+        name = "Git list commits (telescope): see list of all commits, commit details, switch to an older commit",
         fn = function()
             vim.cmd([[Telescope git_commits]])
         end,

@@ -6,8 +6,28 @@ return {
     },
     version = '1.*',
     config = function()
+        local luasnip = require("luasnip")
+
+        luasnip.config.set_config({
+            enable_autosnippets = true,
+        })
+
+        vim.keymap.set({ "i", "s" }, "<C-J>", function() luasnip.jump(1) end, { silent = true })
+        vim.keymap.set({ "i", "s" }, "<C-K>", function() luasnip.jump(-1) end, { silent = true })
+
         require("blink.cmp").setup({
-            keymap = { preset = 'default' },
+            keymap = { 
+                preset = 'default',
+                ["<Tab>"] = {
+                    "snippet_forward",
+                    "fallback",
+                },
+
+                ["<S-Tab>"] = {
+                    "snippet_backward",
+                    "fallback",
+                },
+            },
 
             appearance = {
                 nerd_font_variant = 'mono'
@@ -49,7 +69,12 @@ return {
             -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
             --
             -- See the fuzzy documentation for more information
-            fuzzy = { implementation = "prefer_rust" }
+            fuzzy = { implementation = "prefer_rust" },
+
+
+            snippets = {
+                preset = "luasnip"
+            },
         })
     end
 }
