@@ -22,4 +22,8 @@ vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>")
 vim.keymap.set("n", "]c", ":cnext<CR>zz")
 vim.keymap.set("n", "[c", ":cprev<CR>zz")
 
+vim.keymap.set("n", "<leader>d", ":bdelete<CR>")
+
+vim.keymap.set("n", "<leader>s", ":bot sf #<CR>")
+
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>")

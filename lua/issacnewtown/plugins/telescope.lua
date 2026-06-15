@@ -12,13 +12,11 @@ return {
             defaults = {
                 previewer = false,
                 borderchars = { "", "", "", "", "", "", "", "" },
-                file_ignore_patterns = { "%.class$" },
                 mappings = {
                     n = {
                         ["<M-p>"] = action_layout.toggle_preview,
                     },
                     i = {
-                        ["<esc>"] = actions.close,
                         ["<M-p>"] = action_layout.toggle_preview,
                     },
                 }
@@ -38,12 +36,17 @@ return {
                 borderchars = { "", "", "", "", "", "", "", "" },
             }
 
-            local ok = pcall(function() builtin.git_files(opts) end)
-            if not ok then
-                builtin.find_files(opts)
-            end
+            builtin.find_files(opts)
         end)
 
+        vim.keymap.set("n", "<M-b>", function()
+            local opts = {
+                previewer = false,
+                borderchars = { "", "", "", "", "", "", "", "" },
+            }
+            builtin.buffers(themes.get_dropdown(opts))
+            -- builtin.buffers()
+        end)
         vim.keymap.set("n", "<M-h>", builtin.help_tags)
         vim.keymap.set('n', '<leader>W', function()
             builtin.grep_string({ search = vim.fn.input("Grep > ") })

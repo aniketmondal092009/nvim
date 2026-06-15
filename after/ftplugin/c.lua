@@ -30,7 +30,7 @@ vim.lsp.config('clangd', {
         "--background-index",
         "--pch-storage=memory",
     },
-    filetypes = { "cpp" },
+    filetypes = { "c" },
     capabilities = capabilities,
     flags = {
         debounce_text_changes = 200,

@@ -1,20 +1,9 @@
 return {
     'saghen/blink.cmp',
     dependencies = { 
-        "rafamadriz/friendly-snippets",
-        { 'L3MON4D3/LuaSnip', version = 'v2.*' },
     },
     version = '1.*',
     config = function()
-        local luasnip = require("luasnip")
-
-        luasnip.config.set_config({
-            enable_autosnippets = true,
-        })
-
-        vim.keymap.set({ "i", "s" }, "<C-J>", function() luasnip.jump(1) end, { silent = true })
-        vim.keymap.set({ "i", "s" }, "<C-K>", function() luasnip.jump(-1) end, { silent = true })
-
         require("blink.cmp").setup({
             keymap = { 
                 preset = 'default',

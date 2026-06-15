@@ -1,8 +1,9 @@
+
 local ls = require("luasnip")
 local s = ls.snippet
 local fmt = require("luasnip.extras.fmt").fmt
 
-return {
+ls.add_snippets("css", {
     s({ trig = "**", snippetType = "autosnippet" }, fmt([[
 * {{
     margin: 0;
@@ -10,4 +11,4 @@ return {
     box-sizing: border-box;
 }}
 ]], {})),
-}
+})
