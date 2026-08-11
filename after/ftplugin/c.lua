@@ -22,20 +22,4 @@ int main() {{
 
 
 
-vim.lsp.config('clangd', {
-    cmd = {
-        "clangd",
-        "-j=4",
-        "--malloc-trim",
-        "--background-index",
-        "--pch-storage=memory",
-    },
-    filetypes = { "c" },
-    capabilities = capabilities,
-    flags = {
-        debounce_text_changes = 200,
-    },
-})
-
-vim.lsp.enable("clangd")
 

@@ -1,4 +1,50 @@
 
+local root_markers1 = {
+  '.emmyrc.json',
+  '.luarc.json',
+  '.luarc.jsonc',
+}
+local root_markers2 = {
+  '.luacheckrc',
+  '.stylua.toml',
+  'stylua.toml',
+  'selene.toml',
+  'selene.yml',
+}
+
+---@type vim.lsp.Config
+vim.lsp.config('lua_ls', {
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = vim.fn.has('nvim-0.11.3') == 1 and { root_markers1, root_markers2, { '.git' } }
+    or vim.list_extend(vim.list_extend(root_markers1, root_markers2), { '.git' }),
+  settings = {
+    Lua = {
+      codeLens = { enable = true },
+      hint = { enable = true, semicolon = 'Disable' },
+    },
+  },
+})
+vim.lsp.enable("lua_ls")
+
+
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+vim.lsp.config('clangd', {
+    cmd = {
+        "clangd",
+        "-j=4",
+        "--malloc-trim",
+        "--background-index",
+        "--pch-storage=memory",
+    },
+    filetypes = { "c", "cpp" },
+    capabilities = capabilities,
+    flags = {
+        debounce_text_changes = 200,
+    },
+})
+
+vim.lsp.enable("clangd")
 
 
 vim.diagnostic.config({

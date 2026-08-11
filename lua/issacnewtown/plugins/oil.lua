@@ -1,6 +1,8 @@
 return {
     "stevearc/oil.nvim",
     config = function()
+        local show_details = false
+
         require("oil").setup {
             default_file_explorer = true,
             view_options = {
@@ -8,9 +10,10 @@ return {
             },
 
             columns = {
-                -- "permissions",
-                -- "size",
-                -- "mtime",
+                -- "icon",
+                "permissions",
+                "size",
+                "mtime",
             },
             constrain_cursor = "name",
             skip_confirm_for_simple_edits = true,
@@ -19,7 +22,13 @@ return {
                 ["<C-p>"] = false,
                 ["<C-s>"] = false,
                 ["."] = function()
-                    require("oil").set_columns({ "permissions", "size", "mtime" })
+                    show_details = not show_details
+
+                    if show_details then
+                        require("oil").set_columns({ "permissions", "size", "mtime" })
+                    else
+                        require("oil").set_columns({})
+                    end
                 end,
 
             }
