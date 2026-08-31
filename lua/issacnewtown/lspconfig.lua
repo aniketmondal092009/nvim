@@ -32,10 +32,6 @@ local capabilities = require('blink.cmp').get_lsp_capabilities()
 vim.lsp.config('clangd', {
     cmd = {
         "clangd",
-        "-j=4",
-        "--malloc-trim",
-        "--background-index",
-        "--pch-storage=memory",
     },
     filetypes = { "c", "cpp" },
     capabilities = capabilities,

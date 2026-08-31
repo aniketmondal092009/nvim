@@ -1,18 +1,18 @@
 return {
-    {
-        "atlas.nvim",
-        lazy = true,
-        dir = "~/dev/atlastheme",
-        -- lazy = false,
-        -- priority = 1000,
-        config = function()
-            require('atlas').setup({
-                variant = "main",
-                disable_background = true,
-            })
-            -- vim.cmd([[color atlas]])
-        end
-    },
+    -- {
+    --     "atlas.nvim",
+    --     lazy = true,
+    --     dir = "~/dev/atlastheme",
+    --     -- lazy = false,
+    --     -- priority = 1000,
+    --     config = function()
+    --         require('atlas').setup({
+    --             variant = "main",
+    --             disable_background = true,
+    --         })
+    --         -- vim.cmd([[color atlas]])
+    --     end
+    -- },
     -- { 'ThunderBoltCODMYT/gruber-darker.vim' },
     {
         "sainnhe/gruvbox-material",
@@ -42,7 +42,7 @@ return {
                 telescope = false,
             })
 
-            vim.cmd([[color base16-gruvbox-material-dark-soft]])
+            vim.cmd([[color base16-github-dark]])
         end
     }
     -- { "folke/tokyonight.nvim" },

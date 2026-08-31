@@ -2,7 +2,7 @@ return {
     'nvim-telescope/telescope.nvim', version = '*',
     dependencies = {
         'nvim-lua/plenary.nvim',
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        -- { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
         { 'nvim-mini/mini.icons', version = '*' },
     },
 
@@ -31,7 +31,7 @@ return {
                 }
             }
         })
-        require('telescope').load_extension('fzf')
+        -- require('telescope').load_extension('fzf')
         require("telescope").load_extension('harpoon')
 
 
